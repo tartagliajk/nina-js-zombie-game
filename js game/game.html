@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<header>
+</header>
+<body>
+	<script src="simple.js">
+        //skapar varibeln boba som spawnar på en random plats
+        var bobas = [];
+
+        var i = 0;
+        
+        var backgroundmusic = new Audio("sound/background-music.wav");
+        
+        var hit = new Audio("sound/kill.wav");
+
+        var victory = new Audio("sound/victory.wav");
+
+        var gameover = new Audio("sound/gameover.wav");
+        
+        var score = 0;
+
+        //ändrar antalet boba
+        while (i<10)
+        {
+            //push lägger in i listan (append), spawnar medvetet på random ställe så man kan bli direkt dödad
+            bobas.push({
+            x: random(totalWidth),
+            y: random(totalHeight),
+            speed: random(1,5)});
+            i += 1;
+        }
+        
+        var player1 = ({
+            x: 100,
+            y: 100, 
+            speed: 2,
+        })
+
+        var player2 = ({
+            x:300,
+            y: 300,
+            speed: 2,
+        })
+
+
+        function update()
+        {
+            clearScreen();
+
+            //fixa så att den stoppas när man har dött!!!!
+            window.setInterval(function () {
+            score = score + 1;
+            document.getElementById("scores").innerHTML = "Score: " + score;
+            }, 1000);
+
+            backgroundmusic.play("backgroundmusic")
+
+            var i = 0;
+            
+            picture(player1.x - 50, player1.y - 50, "images/tea.png");
+            picture(player2.x - 50, player2.y - 50, "images/bread.png");
+
+            let length = bobas.length;
+
+            if(keyboard.space)
+                player1.speed += 2/30;
+            else
+                player1.speed = 2;
+            
+            if(keyboard.m)
+                player2.speed += 2/30;
+            else
+                player2.speed = 2;
+            
+            while (i < length)
+            {
+
+                var boba = bobas[i];
+
+                //lägger bilden på var boba x/y kord
+                picture(boba.x - 50, boba.y - 50, "images/boba.png");
+                
+                if(mouse.left && (distance(mouse, boba) < 40)){
+                    bobas.splice(i,1);
+                    hit.play();
+                }
+                
+                length = bobas.length;
+                //det är meningen att man ska bli långsammare med varje boba dör
+                if(keyboard.w)
+                    player1.y -= player1.speed;
+                
+                if(keyboard.up)
+                    player2.y -= player2.speed;
+
+                if(keyboard.s)
+                    player1.y += player1.speed;
+                
+                if(keyboard.down)
+                    player2.y += player2.speed;
+                
+                if(keyboard.a)
+                    player1.x -= player1.speed;
+                
+                if (keyboard.left)
+                    player2.x -= player2.speed;
+                
+                if (keyboard.d)
+                    player1.x += player1.speed;
+                
+                if (keyboard.right)
+                    player2.x += player2.speed;
+
+                if(distance(boba, player1) < distance(player2, boba))
+                    {var temp_player = player1}
+                else {var temp_player = player2}
+                
+                
+                
+                if (boba.x < temp_player.x)
+                    if(Math.abs(boba.x - temp_player.x) < boba.speed) 
+                    boba.x = temp_player.x
+                    else
+                    boba.x += boba.speed;
+                else
+                    if(Math.abs(boba.x - temp_player.x) < boba.speed) 
+                    boba.x = temp_player.x
+                    else
+                        boba.x -= boba.speed;
+        
+                if (boba.y < temp_player.y)
+                    if(Math.abs(boba.y - temp_player.y) < boba.speed) 
+                    boba.y = temp_player.y
+                    else
+                    boba.y += boba.speed;
+                else
+                    if(Math.abs(boba.y - temp_player.y) < boba.speed) 
+                    boba.y = temp_player.y
+                    else
+                    boba.y -= boba.speed;
+
+                //dödar båda spelarna ifall ena dör, gäller att man har sammarbete ;)
+                if (distance(player1, boba) < 9)
+                {
+                    backgroundmusic.pause();
+                    gameover.play();
+                    alert("Game over, player 1 died.");
+                    stopUpdate();
+                }
+
+                if (distance(player2, boba) < 9)
+                {
+                    backgroundmusic.pause();
+                    gameover.play();
+                    alert("Game over, player 2 died.");
+                    stopUpdate();
+                }
+
+                if (bobas.length == 0)
+                {
+                    backgroundmusic.pause();
+                    victory.play();
+                    alert("Victory");
+                    stopUpdate();
+                }
+                i += 1;
+            }
+        }
+    </script>
+        <div class="score" id="scores"></div>
+</body>
+<footer>
+    
+</footer>
+</html>

@@ -1,0 +1,102 @@
+@import url('http://fonts.cdnfonts.com/css/lemonmilk');
+
+body{
+    height: 100%;
+    background-color: #aab8e0;
+    margin: 0;
+    font-family: 'Lemon/Milk light', sans-serif;
+}
+
+.maintitle{
+    justify-content: center;
+    text-align: center;
+    margin-top: 70px;
+    font-size: 50px;
+}
+
+.player1{
+    margin-top: 20px;
+    font-size: 30px;
+    text-align: left;
+}
+
+.player2{
+    margin-top: 30px;
+    font-size: 30px;
+    text-align: center;
+}
+
+.bodytext{
+    font-size: 20px;
+    text-align: left;
+}
+
+.bodytext2{
+    font-size: 20px;
+    text-align: center;
+}
+
+li{
+    font-size: 20px;
+    text-align: left;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.right{
+    margin-left: 280px;
+    list-style-position: inside;
+}
+
+img{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    max-width: 250px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.flex-container-main{
+    height: auto;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-container-mini {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-box {
+    background-color: white;
+    padding: 5px;
+    width: 600px;
+    height: 500px;
+    margin: 10px;
+    line-height: 20px;
+    color: black;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: center;
+    border: 5px solid black;
+}
+
+.flex-item{
+    display: flex;
+    flex-direction: column;
+    margin-top: 140px;
+}
+
+.scores{
+    font-size: 30px;
+    text-align: center;
+}

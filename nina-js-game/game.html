@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<header>
+</header>
+<body>
+	<script src="simple.js">
+        //skapar varibeler
+
+        //en tom lista som heter boba
+        var bobas = [];
+
+        var i = 0;
+        
+        //skapar varibler som länkar till audio som ligger i en mapp
+        var backgroundmusic = new Audio("sound/sans.wav");
+        var hit = new Audio("sound/kill.wav");
+        var victory = new Audio("sound/victory.wav");
+        var gameover = new Audio("sound/gameover.wav");
+                
+        var score = 0;
+        //en variabel som använder sig av element id scores som finns längre ner
+        var el = document.getElementById('scores');
+
+        //ändrar antalet boba
+        while (i<10)
+        {
+            //push lägger in i listan (append), spawnar boba(enemies) medvetet på random ställe så man kan bli direkt dödad
+            bobas.push({
+            x: random(totalWidth),
+            y: random(totalHeight),
+            //sätter en speed som är random mellan 1-5
+            speed: random(1,5)});
+            //lägger till bobas till listan är 10
+            i += 1;
+        }
+        
+        //skapar varibler åt spelar 1 som spawnar random på skrämens total storlek
+        var player1 = ({
+            x: random(totalWidth),
+            y: random(totalHeight), 
+            speed: 2,
+        })
+
+        //skapar varibler åt spelar 2 som spawnar random på skrämens total storlek och dess speed är 2
+        var player2 = ({
+            x: random(totalWidth),
+            y: random(totalHeight),
+            speed: 2,
+        })
+        
+        //en funktion som räknar score beroende på hur länge man överlever, lägger till score +1 varje sekund
+        function incrementSeconds() {
+        score += 1;
+        el.innerText = "Score " + score;}
+        var cancel = setInterval(incrementSeconds, 1000);
+        
+        //funktion som updateras hela tiden
+        function update()
+        {
+            //rensar skrämen för att undivika lagg
+            clearScreen();
+
+            //spelar backgroundmusic och loopar den
+            backgroundmusic.play("backgroundmusic")
+            backgroundmusic.loop = true
+
+            var i = 0;
+            
+            //sätter spelarnas kordinater med png bilder
+            picture(player1.x - 50, player1.y - 50, "images/tea.png");
+            picture(player2.x - 50, player2.y - 50, "images/bread.png");
+
+            let length = bobas.length;
+
+            //ifall spelarna håller in mellanslag eller m så kommer de boostas med 2 per 30 frames och om de slägger så går det tillbaka till 2
+            if(keyboard.space)
+                player1.speed += 2/30;
+            else
+                player1.speed = 2;
+            
+            if(keyboard.m)
+                player2.speed += 2/30;
+            else
+                player2.speed = 2;
+            
+            while (i < length)
+            {
+                //varibel som visar induviellt enemy i en lista med index i
+                var boba = bobas[i];
+
+                //lägger bilden på var boba x/y kord
+                picture(boba.x - 50, boba.y - 50, "images/boba.png");
+                
+                //ifall man vänsterklickar boba så kommer den tas bort från listan med index i
+                if(mouse.left && (distance(mouse, boba) < 40)){
+                    bobas.splice(i,1);
+                    hit.play();
+                }
+                //detta gör så att man blir långsammare med varje boba som dör
+                length = bobas.length;
+
+                //kontroller
+                //ifall w är klickad flyttas p1 upp
+                if(keyboard.w)
+                    player1.y -= player1.speed;
+
+                //ifall up-pil-knapppen nertryckt flyttas spelaren upp
+                if(keyboard.up)
+                    player2.y -= player2.speed;
+
+                //samma sak händer här fast med olika direktioner och tangernter
+                if(keyboard.s)
+                    player1.y += player1.speed;
+                
+                if(keyboard.down)
+                    player2.y += player2.speed;
+                
+                if(keyboard.a)
+                    player1.x -= player1.speed;
+                
+                if (keyboard.left)
+                    player2.x -= player2.speed;
+                
+                if (keyboard.d)
+                    player1.x += player1.speed;
+                
+                if (keyboard.right)
+                    player2.x += player2.speed;
+
+                //den checkar distansen mellan boba och player 1 & player 2, och lägger en temp player på den som är närmare
+                if(distance(boba, player1) < distance(player2, boba))
+                    {var temp_player = player1}
+                else {var temp_player = player2}
+                
+                //ifall bobas x kordinat är närmare temp players x koridant så går den x antal pixlar för att direkt komma till spelaren istället för att alltid hoppa 1-5 pixlar(speed)
+                if (boba.x < temp_player.x)
+                    if(Math.abs(boba.x - temp_player.x) < boba.speed) 
+                    boba.x = temp_player.x
+                    else
+                    boba.x += boba.speed;
+                else
+                    if(Math.abs(boba.x - temp_player.x) < boba.speed) 
+                    boba.x = temp_player.x
+                    else
+                        boba.x -= boba.speed;
+        
+                //samma konsept här, fast här tittar den på temp players y kordinat och bobas y kordinat
+                if (boba.y < temp_player.y)
+                    if(Math.abs(boba.y - temp_player.y) < boba.speed) 
+                    boba.y = temp_player.y
+                    else
+                    boba.y += boba.speed;
+                else
+                    if(Math.abs(boba.y - temp_player.y) < boba.speed) 
+                    boba.y = temp_player.y
+                    else
+                    boba.y -= boba.speed;
+
+                //direkt förlust ifall ena spelaren dör, pausar bakgrundsmusiken
+                if (distance(player1, boba) < 9)
+                {
+                    backgroundmusic.pause();
+                    //spelar istället gameover låten
+                    gameover.play();
+                    //skriver ut det som står inom ()
+                    alert("Game over, player 1 died.");
+                    //stoppar update funktionen
+                    stopUpdate();
+                }
+
+                //samma sak händer nedan fast player 2 dör
+                if (distance(player2, boba) < 9)
+                {
+                    backgroundmusic.pause();
+                    gameover.play();
+                    alert("Game over, player 2 died.");
+                    stopUpdate();
+                }
+
+                //ifall man dödar alla bobas, dvs listan är tom så vinner man
+                if (bobas.length == 0)
+                {
+                    backgroundmusic.pause();
+                    //spelar upp victory låten
+                    victory.play();
+                    alert("Victory");
+                    stopUpdate();
+                }
+                i += 1;
+            }
+        }
+        clearInterval(setInterval);
+    </script>
+        <!--div element med id scores, som skriver ut js funktionen (har även en css class)-->
+        <div id='scores' class="scores"> </div>
+</body>
+<footer>
+</footer>
+</html>

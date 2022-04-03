@@ -1,0 +1,110 @@
+/*importerar en font, via en url*/
+@import url('http://fonts.cdnfonts.com/css/lemonmilk');
+
+/*body, höjden är 100% (dvs hela skrämen)*/
+body{
+    height: 100%;
+    background-color: #aab8e0;
+    margin: 0;
+    font-family: 'Lemon/Milk light', sans-serif;
+}
+
+.maintitle{
+    /* centrerar texten på skrämen*/
+    text-align: center;
+    /*top margin 70px*/
+    margin-top: 70px;
+    /*font storlek 50px*/
+    font-size: 50px;
+}
+
+.player1{
+    margin-top: 20px;
+    font-size: 30px;
+    /*lägger texten på vänster sida */
+    text-align: left;
+}
+
+.player2{
+    margin-top: 30px;
+    font-size: 30px;
+    /*centerar texten */
+    text-align: center;
+}
+
+.bodytext{
+    font-size: 20px;
+    text-align: left;
+}
+
+.bodytext2{
+    font-size: 20px;
+    text-align: center;
+}
+
+/* alla listor har denna stylen*/
+li{
+    font-size: 20px;
+    text-align: left;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.right{
+    margin-left: 280px;
+    list-style-position: inside;
+}
+
+/* alla img har denna stylen*/
+img{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    /*sätter en max bredd på 250 px*/
+    max-width: 250px;
+}
+
+a{
+    /* inga linjer under länken*/
+    text-decoration: none;
+    /*använder rgb för att bestämma font färg*/
+    color: rgb(71, 202, 169);
+}
+
+.flex-container {
+    /*hela skärmen = 100%*/
+    height: 100%;
+    display: flex;
+    /*centrerar items och boxen*/
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-box {
+    background-color: white;
+    padding: 5px;
+    /*bestämmer längder*/
+    width: 600px;
+    height: 500px;
+    margin: 10px;
+    /*mellanrummet mellan texterna är 20 px*/
+    line-height: 20px;
+    color: black;
+    /*fetstilad text*/
+    font-weight: bold;
+    font-size: 35px;
+    text-align: center;
+    /*border som är 5px tjock och är svart/helsträckad*/
+    border: 5px solid black;
+}
+
+.flex-item{
+    display: flex;
+    /*items är horisontellt*/
+    flex-direction: column;
+    margin-top: 140px;
+}
+
+.scores{
+    font-size: 30px;
+    text-align: center;
+}
